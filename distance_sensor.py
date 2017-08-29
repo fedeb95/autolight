@@ -1,38 +1,32 @@
 import RPi.GPIO as GPIO
 import time
 
-#set GPIO Pins
-GPIO_TRIGGER = 18
-GPIO_ECHO = 24
- 
-#set GPIO direction (IN / OUT)
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
-
 class DistanceSensor():
     def __init__(self,echo,trigger):
+        self.trigger = trigger
+        self.echo = echo
         #set GPIO direction (IN / OUT)
-        GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-        GPIO.setup(GPIO_ECHO, GPIO.IN)
+        GPIO.setup(self.trigger, GPIO.OUT)
+        GPIO.setup(self.echo, GPIO.IN)
 
 
-    def distance():
+    def distance(self):
         # set Trigger to HIGH
-        GPIO.output(GPIO_TRIGGER, True)
+        GPIO.output(self.trigger, True)
      
         # set Trigger after 0.01ms to LOW
         time.sleep(0.00001)
-        GPIO.output(GPIO_TRIGGER, False)
+        GPIO.output(self.trigger, False)
      
         StartTime = time.time()
         StopTime = time.time()
      
         # save StartTime
-        while GPIO.input(GPIO_ECHO) == 0:
+        while GPIO.input(self.echo) == 0:
             StartTime = time.time()
      
         # save time of arrival
-        while GPIO.input(GPIO_ECHO) == 1:
+        while GPIO.input(self.echo) == 1:
             StopTime = time.time()
      
         # time difference between start and arrival
