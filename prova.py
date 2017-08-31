@@ -3,48 +3,47 @@ import RPi.GPIO as GPIO
 import time
 from distance_sensor import DistanceSensor
 
+pin_button = 26 
+pin_buzz = 19 
+
 class Automation():
-    
-    def __init__(): 
+
+    def __init__(self): 
         GPIO.setmode(GPIO.BCM)
-        pin_self.button = 26 
-        pin_buzz = 19 
-        s = DistanceSensor(18,16)
+        self.s = DistanceSensor(18,16)
         GPIO.setup(pin_buzz, GPIO.OUT)
-        stop()
-        GPIO.setup(pin_self.button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.stop()
+        GPIO.setup(pin_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         for i in range(1,10):
-            distance = s.distance()
+            self.distance = self.s.distance()
         print("Distance setup completed.")
         self.button = False
 
-    def beep():
+    def beep(self):
         GPIO.output(pin_buzz,GPIO.HIGH)
 
-    def stop():
+    def stop(self):
         GPIO.output(pin_buzz,GPIO.LOW)    
 
-    def off():
+    def off(self):
         self.button = True
 
-    def on():
+    def on(self):
         self.button = False
      
-    def run():
+    def run(self):
         try:
             while True:
-                if not GPIO.input(pin_self.button): 
+                if not GPIO.input(pin_button): 
                     self.button = self.button ^ True 
-                    stop()
-                    while not GPIO.input(pin_self.button):
+                    self.stop()
+                    while not GPIO.input(pin_button):
                         time.sleep(0.5)    
                 if not self.button:
-                    cur_dist = s.distance()
-                    delta = distance - cur_dist
-                    print(delta,cur_dist,distance)
+                    cur_dist = self.s.distance()
+                    delta = self.distance - cur_dist
                     if (delta > 20):
-                        print("beep!")
-                        beep()
+                        self.beep()
         except KeyboardInterrupt:
-            stop()
+            self.stop()
             GPIO.cleanup()

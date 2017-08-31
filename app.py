@@ -4,11 +4,11 @@ from threading import Thread
 
 app = Flask(__name__)
 aut = Automation()
+thread = Thread(target=aut.run())
+thread.start()
 
 @app.route('/')
 def index():
-    thread = Thread(target=aut.run()) 
-    thread.start()
     return render_template('index.html')
 
 @app.route('/on/')
@@ -22,4 +22,4 @@ def light_off():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=80)
