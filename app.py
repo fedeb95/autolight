@@ -1,11 +1,8 @@
 from flask import Flask, render_template,request
 from prova import Automation
-from threading import Thread
+import _thread
 
 app = Flask(__name__)
-aut = Automation()
-thread = Thread(target=aut.run())
-thread.start()
 
 @app.route('/')
 def index():
@@ -21,5 +18,10 @@ def light_off():
     aut.off()
     return render_template('index.html')
 
+def flaskThread():
+    app.run(host='0.0.0.0', port='80')
+
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    aut = Automation()
+    _thread.start_new_thread(flaskThread,())
+    aut.run()

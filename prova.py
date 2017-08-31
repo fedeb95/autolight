@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import RPi.GPIO as GPIO
 import time
+import _thread
 from distance_sensor import DistanceSensor
 
 pin_button = 26 
@@ -18,6 +19,7 @@ class Automation():
             self.distance = self.s.distance()
         print("Distance setup completed.")
         self.button = False
+        self.lock = _thread.allocate_lock()
 
     def beep(self):
         GPIO.output(pin_buzz,GPIO.HIGH)
@@ -26,16 +28,23 @@ class Automation():
         GPIO.output(pin_buzz,GPIO.LOW)    
 
     def off(self):
+        self.lock.acquire()
         self.button = True
+        self.stop()
+        self.lock.release()
 
     def on(self):
+        self.lock.acquire()
         self.button = False
+        self.lock.release()
      
     def run(self):
         try:
             while True:
                 if not GPIO.input(pin_button): 
+                    self.lock.acquire()
                     self.button = self.button ^ True 
+                    self.lock.release()
                     self.stop()
                     while not GPIO.input(pin_button):
                         time.sleep(0.5)    
