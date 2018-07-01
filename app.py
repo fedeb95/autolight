@@ -1,6 +1,7 @@
 from flask import Flask, render_template,request
-from prova import Automation
+from light_switch import LightSwitch
 from threading import Thread
+
 
 app = Flask(__name__)
 aut = Automation()
@@ -11,15 +12,11 @@ def index():
     thread.start()
     return render_template('index.html')
 
-@app.route('/on/')
+@app.route('/activate/')
 def light_on():
-    aut.on()
-    return render_template('index.html')
-
-@app.route('/off/')
-def light_off():
-    aut.off()
+    ls.activate()
     return render_template('index.html')
 
 if __name__ == '__main__':
+    ls = LightSwitch()
     app.run(debug=False, host='0.0.0.0')
