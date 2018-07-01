@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 class LightSwitch():
-    def __init_(self):
+    def __init__(self):
         GPIO.setmode(GPIO.BCM)
         self.on = False 
         self.pin = 2
