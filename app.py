@@ -4,12 +4,10 @@ from threading import Thread
 
 
 app = Flask(__name__)
-aut = Automation()
+ls = LightSwitch()
 
 @app.route('/')
 def index():
-    thread = Thread(target=aut.run()) 
-    thread.start()
     return render_template('index.html')
 
 @app.route('/activate/')
@@ -18,5 +16,4 @@ def light_on():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    ls = LightSwitch()
     app.run(debug=False, host='0.0.0.0')
