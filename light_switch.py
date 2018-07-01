@@ -6,10 +6,10 @@ class LightSwitch():
         self.pin = 2
         GPIO.setup(self.pin, GPIO.OUT)
 
-    def is_on():
+    def is_on(self):
         return self.on 
 
-    def activate():
+    def activate(self):
         self.on = self.on ^ True
         #activation logic
         GPIO.output(self.pin,self.on)
