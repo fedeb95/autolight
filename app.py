@@ -8,12 +8,18 @@ ls = LightSwitch()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if ls.is_on():
+        return render_template('index.html', image="/static/on.png")
+    else:
+        return render_template('index.html', image="/static/off.png")
 
 @app.route('/activate/')
 def light_on():
     ls.activate()
-    return render_template('index.html')
+    if ls.is_on():
+        return render_template('index.html', image="/static/on.png")
+    else:
+        return render_template('index.html', image="/static/off.png")
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
