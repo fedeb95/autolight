@@ -4,7 +4,7 @@ from threading import Thread
 
 
 app = Flask(__name__)
-ls = LightSwitch()
+ls = LightSwitch(pin=2,on=False)
 
 @app.route('/')
 def index():
