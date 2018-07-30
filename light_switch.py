@@ -1,10 +1,10 @@
-import RPi.GPIO as GPIO
+import pin
 class LightSwitch:
-    def __init__(self,pin,on):
-        GPIO.setmode(GPIO.BCM)
+    def __init__(self,ch,on):
+        pin.setmode(pin.BCM)
         self.on = on 
-        self.pin = pin
-        GPIO.setup(self.pin, GPIO.OUT)
+        self.ch = ch 
+        pin.setup(self.ch, pin.OUT)
 
     def is_on(self):
         return self.on 
@@ -12,4 +12,4 @@ class LightSwitch:
     def activate(self):
         self.on = self.on ^ True
         #activation logic
-        GPIO.output(self.pin,self.on)
+        pin.output(self.ch,self.on)
