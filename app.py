@@ -11,6 +11,7 @@ from nn import NeuralNetwork
 from config_manager import ConfigManager
 
 manager = ConfigManager.get_instance('./app_config')
+pin.config('./pin_config')
 app = Flask(__name__)
 ls = LightSwitch(ch=manager.config["light_switch"],on=False)
 lsens = LightSensor(manager.config['light_sensor'])
@@ -51,7 +52,6 @@ def run():
             ls.activate
 
 if __name__ == '__main__':
-    pin.config('./pin_config')
     # get config, if train=True don't start nn in a new thread but enable training, otherwise only new thread without training
     app.run(debug=True, host='0.0.0.0')
     if manager.config['train']:
