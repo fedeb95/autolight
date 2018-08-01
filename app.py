@@ -29,6 +29,7 @@ def get_data():
     is_on = ls.is_on()
     distance = dst.distance()
     light = lsens.light_amount()
+    return {'time':time_of_day,'switch':is_on,'distance':distance,'light':light}
 
 @app.route('/')
 def index():
@@ -55,7 +56,10 @@ if __name__ == '__main__':
     # get config, if train=True don't start nn in a new thread but enable training, otherwise only new thread without training
     app.run(debug=True, host='0.0.0.0')
     if manager.config['train']:
-        Timer(60,register_data).start()
+        t = Timer(60.0,register_data)
+        t.start()
+        t.join()
     else:
         thread = Thread(target=run)
         thread.start()
+        thread.join()
