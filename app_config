@@ -1,4 +1,8 @@
 {
     "endpoint": "localhost:3456",
-    "train": true
+    "train": true,
+    "light_switch": 2,
+    "echo": 4,
+    "trigger": 3,
+    "light_sensor": 17
 }

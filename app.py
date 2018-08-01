@@ -10,10 +10,11 @@ import datetime
 from nn import NeuralNetwork
 from config_manager import ConfigManager
 
+manager = ConfigManager.get_instance('./app_config')
 app = Flask(__name__)
-ls = LightSwitch(ch=2,on=False)
-#lsens = LightSensor()
-dst = DistanceSensor(echo=4,trigger=5)
+ls = LightSwitch(ch=manager.config["light_switch"],on=False)
+lsens = LightSensor(manager.config['light_sensor'])
+dst = DistanceSensor(echo=manager.config['echo'],trigger=manager.config['trigger'])
 #bitton = Button() # not only activable from web
 
 
@@ -26,7 +27,7 @@ def get_data():
     time_of_day = utils.normalize_hour(now.hour,now.minute)
     is_on = ls.is_on()
     distance = dst.distance()
-    #light =
+    light = lsens.light_amount()
 
 @app.route('/')
 def index():
@@ -51,7 +52,6 @@ def run():
 
 if __name__ == '__main__':
     pin.config('./pin_config')
-    manager = ConfigManager.get_instance('./app_config')
     # get config, if train=True don't start nn in a new thread but enable training, otherwise only new thread without training
     app.run(debug=True, host='0.0.0.0')
     if manager.config['train']:
