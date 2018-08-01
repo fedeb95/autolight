@@ -10,7 +10,7 @@ class LightSensor:
         pin.setup(self.ch, pin.OUT)
         pin.output(self.ch, pin.LOW)
         time.sleep(0.1)
-        pin.setup(self.ch, GPIO.IN)
+        pin.setup(self.ch, pin.IN)
         # This takes about 1 millisecond per loop cycle
         while pin.input(self.ch) == pin.LOW:
             reading += 1
