@@ -21,7 +21,7 @@ dst = DistanceSensor(echo=manager.config['echo'],trigger=manager.config['trigger
 
 def register_data():
     data = get_data()
-    # call service for storage and training
+    print(data) # call service for storage and training instead
 
 def get_data():
     now = datetime.datetime.now()
