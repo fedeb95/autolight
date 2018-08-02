@@ -1,6 +1,8 @@
 {
-    "endpoint": "localhost:3456",
     "train": true,
+    "train_time": 60.0,
+    "train_days":2,
+    "register_time": 5.0,
     "light_switch": 2,
     "echo": 4,
     "trigger": 3,
