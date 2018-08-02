@@ -64,9 +64,9 @@ def run():
             dst = utils.normalize(data['distance'],max_d,min_d)
             output = nn.think(array([data['time'],dst,data['light']]))
             while output and not ls.is_on():
-                if light_switch_lock.acquire():
+                if light_switch_mylock.acquire():
                     ls.activate
-                    light_switch_lock.release()
+                    light_switch_mylock.release()
         except Exception:
             pass
 
@@ -77,7 +77,7 @@ app = Flask(__name__)
 ls = LightSwitch(ch=manager.config["light_switch"],on=False)
 lsens = LightSensor(manager.config['light_sensor'])
 dst = DistanceSensor(echo=manager.config['echo'],trigger=manager.config['trigger'])
-light_switch_lock = Lock()
+light_switch_mylock = Lock()
 #bitton = Button() # not only activable from web
 
 nn=NeuralNetwork()
@@ -99,9 +99,9 @@ def index():
 
 @app.route('/activate/')
 def light_on():
-    light_switch_lock.acquire()
+    light_switch_mylock.acquire()
     ls.activate()
-    light_switch_lock.release()
+    light_switch_mylock.release()
     if ls.is_on():
         return render_template('index.html', image="/static/on.png")
     else:
