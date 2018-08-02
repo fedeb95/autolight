@@ -91,8 +91,9 @@ trainer = Timer(TRAIN_TIME,train)
 Timer(84600.0,delete).start()
 trainer.start()
 t.start()
-thread = Thread(target=run)
-thread.start()
+if not manager.config['train']:
+    thread = Thread(target=run)
+    thread.start()
 
 @app.route('/')
 def index():
