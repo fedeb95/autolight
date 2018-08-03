@@ -65,11 +65,15 @@ def run():
             output = nn.think(array([data['time'],dst,data['light']]))
             while output and not ls.is_on():
                 if light_switch_mylock.acquire():
-                    ls.activate()
+                    with open('switch','w') as f:
+                        f.write('on\n')
+                    #ls.activate()
                     light_switch_mylock.release()
             while not output and ls.is_on():
                 if light_switch_mylock.acquire():
-                    ls.activate()
+                    with open('switch','w') as f:
+                        f.write('off\n')
+                    #ls.activate()
                     light_switch_mylock.release()
         except Exception:
             pass
