@@ -15,6 +15,7 @@ manager = ConfigManager.get_instance('./app_config')
 REGISTER_TIME=manager.config['register_time']
 TRAIN_TIME=manager.config['train_time']
 DELETE_DAYS=manager.config['train_days']
+override = False
 
 def register_data():
     data = get_data()
@@ -27,12 +28,15 @@ def train():
     if not data == None:
         max_distance = db.get_max('distance')['distance']
         min_distance = db.get_min('distance')['distance']
+        max_light = db.get_max('light')['light']
+        min_light = db.get_min('light')['light']
         # split inputs and outputs
         inputs = []
         outputs = []
         for el in data:
             dst = utils.normalize(el['distance'],max_distance,min_distance)
-            inputs.append([el['time'],dst,el['light']])
+            light = urils.normalize(el['light'],max_light,min_light)
+            inputs.append([el['time'],dst,light])
             outputs.append([el['switch']])
         nn.train(array(inputs),array(outputs), 1000)
         with open('weights','w') as f:
@@ -48,31 +52,33 @@ def get_data():
     return {'time':time_of_day,'switch':is_on,'distance':distance,'light':light}
 
 def delete():
+    train()
     oldest = (datetime.datetime.now()-datetime.timedelta(days=DELETE_DAYS)).timestamp()
     db.collection.delete_many({"timestamp":{"$lt":oldest}})
 
 def run():
     while True:
-        try:
-            data = get_data()
-            max_d = db.get_max('distance')
-            min_d = db.get_min('distance')
-            if not max_d == None:
-                max_d = max_d['distance']
-            if not min_d == None:
-                min_d = min_d['distance']
-            dst = utils.normalize(data['distance'],max_d,min_d)
-            output = nn.think(array([data['time'],dst,data['light']]))
-            while output and not ls.is_on():
-                if light_switch_mylock.acquire():
-                    ls.activate()
-                    light_switch_mylock.release()
-            while not output and ls.is_on():
-                if light_switch_mylock.acquire():
-                    ls.activate()
-                    light_switch_mylock.release()
-        except Exception:
-            pass
+        if not override:
+            try:
+                data = get_data()
+                max_d = db.get_max('distance')
+                min_d = db.get_min('distance')
+                if not max_d == None:
+                    max_d = max_d['distance']
+                if not min_d == None:
+                    min_d = min_d['distance']
+                dst = utils.normalize(data['distance'],max_d,min_d)
+                output = nn.think(array([data['time'],dst,data['light']]))
+                while output>0.5 and not ls.is_on():
+                    if light_switch_mylock.acquire():
+                        ls.activate()
+                        light_switch_mylock.release()
+                while output<=0.5 and ls.is_on():
+                    if light_switch_mylock.acquire():
+                        ls.activate()
+                        light_switch_mylock.release()
+            except Exception:
+                pass
 
 
 pin.config('./pin_config')
@@ -87,9 +93,7 @@ light_switch_mylock = Lock()
 nn=NeuralNetwork()
 
 t = Timer(REGISTER_TIME,register_data)
-trainer = Timer(TRAIN_TIME,train)
 Timer(84600.0,delete).start()
-trainer.start()
 t.start()
 if not manager.config['train']:
     thread = Thread(target=run)
@@ -104,6 +108,8 @@ def index():
 
 @app.route('/activate/')
 def light_on():
+    global override
+    override = override ^ True
     light_switch_mylock.acquire()
     ls.activate()
     light_switch_mylock.release()
