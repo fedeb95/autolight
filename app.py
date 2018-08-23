@@ -14,7 +14,6 @@ import pin
 
 manager = ConfigManager.get_instance('./app_config')
 REGISTER_TIME=manager.config['register_time']
-TRAIN_TIME=manager.config['train_time']
 DELETE_DAYS=manager.config['train_days']
 override = False
 clf=None
