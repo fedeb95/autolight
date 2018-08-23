@@ -10,7 +10,6 @@ from db.dbmanager import DBManager
 import pandas as pd
 from pandas.io.json import json_normalize
 from sklearn import tree
-from numpy import array
 import pin
 
 manager = ConfigManager.get_instance('./app_config')
