@@ -2,8 +2,8 @@ from pymongo.mongo_client import MongoClient
 import pymongo
 
 class DBManager():
-    def __init__(self,db,collection):
-        self.client = MongoClient()
+    def __init__(self,db,collection,address='127.0.0.1',port=27017):
+        self.client = MongoClient(address,port)
         self.db = self.client[db]
         self.collection = self.db[collection]
 
