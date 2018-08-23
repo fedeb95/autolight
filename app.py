@@ -77,6 +77,7 @@ t = Timer(REGISTER_TIME,register_data)
 Timer(84600.0,delete).start()
 t.start()
 if not manager.config['train']:
+    train()
     thread = Thread(target=run)
     thread.start()
 
