@@ -35,7 +35,7 @@ def train():
         outputs = []
         for el in data:
             dst = utils.normalize(el['distance'],max_distance,min_distance)
-            light = urils.normalize(el['light'],max_light,min_light)
+            light = utils.normalize(el['light'],max_light,min_light)
             inputs.append([el['time'],dst,light])
             outputs.append([el['switch']])
         nn.train(array(inputs),array(outputs), 1000)
