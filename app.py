@@ -29,7 +29,7 @@ def train():
     data = db.get_all()
     data = pd.DataFrame(list(data))
     labels = data['switch']
-    values = data['distance','light','time']
+    values = data[['distance','light','time']]
     clf=tree.DecisionTreeClassifier()
     clf=clf.fit(values,labels)
 
