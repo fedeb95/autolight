@@ -29,7 +29,7 @@ class Autolight:
         #bitton = Button() # not only activable from web
         self.t = Timer(self.register_time,self.register_data,[self])
         Timer(84600.0,self.delete,[self]).start()
-        t.start()
+        self.t.start()
         if not manager.config['train']:
             self.train()
             thread = Thread(target=self.run,args=self)
