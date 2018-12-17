@@ -81,11 +81,11 @@ class Autolight:
                     data = self.get_data()
                     output=self.clf.predict(self.exclude_switch(json_normalize(data)))
                     logging.info("predicted:{}\n".format(output))
-                    if output and not ls.is_on():
+                    if output[0] and not ls.is_on():
                         if self.light_switch_mylock.acquire():
                             self.ls.activate()
                             self.light_switch_mylock.release()
-                    elif output and self.ls.is_on():
+                    elif output[0] and self.ls.is_on():
                         if self.light_switch_mylock.acquire():
                             self.ls.activate()
                             self.light_switch_mylock.release()
