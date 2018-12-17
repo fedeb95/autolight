@@ -6,7 +6,6 @@ import logging
 al=Autolight()
 app = Flask(__name__)
 al.start()
-Thread(target=al.run)
 print("ok")
 
 @app.route('/')
