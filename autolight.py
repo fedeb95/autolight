@@ -81,5 +81,5 @@ class Autolight:
                         if self.light_switch_mylock.acquire():
                             self.ls.activate()
                             self.light_switch_mylock.release()
-                except Exception:
-                    pass
+                except Exception as e:
+                    logging.error(e) 

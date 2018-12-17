@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    if ls.is_on():
+    if al.ls.is_on():
         return render_template('index.html', image="/static/on.png", override=al.override)
     else:
         return render_template('index.html', image="/static/off.png", override=al.override)
@@ -20,7 +20,7 @@ def light_on():
 
 @app.route('/override/')
 def over():
-    al.override = al.verride ^ True
+    al.override = al.override ^ True
     return redirect(url_for('index'))
 
 
