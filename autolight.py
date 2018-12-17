@@ -10,6 +10,7 @@ import pandas as pd
 from pandas.io.json import json_normalize
 from sklearn import tree
 import pin
+import logging
 
 class Autolight:
     def __init__(self,clf=None):
@@ -27,6 +28,11 @@ class Autolight:
         self.dst = DistanceSensor(echo=self.manager.config['echo'],trigger=self.manager.config['trigger'])
         self.light_switch_mylock = Lock()
         #bitton = Button() # not only activable from web
+        logging.basicConfig(filename=self.manager.config['log'],
+                            filemode='a',
+                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.DEBUG)
             
     def start(self):
         self.t = Timer(self.register_time,self.register_data,[self])
