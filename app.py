@@ -1,4 +1,5 @@
 from flask import Flask, render_template,request,redirect,url_for
+from autolight import Autolight
 
 al=Autolight()
 app = Flask(__name__)
