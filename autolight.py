@@ -76,7 +76,6 @@ class Autolight(Thread):
 
     def run(self):
         while True:
-            sleep(1)
             if not self.override:
                 try:
                     data = self.get_data()
