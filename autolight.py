@@ -12,9 +12,9 @@ from sklearn import tree
 import pin
 
 class Autolight:
-    def __init__(self,clf):
+    def __init__(self,clf=None):
         self.manager = ConfigManager.get_instance('./app_config')
-        self.self.register_time=self.manager.config['register_time']
+        self.register_time=self.manager.config['register_time']
         self.train_days=self.manager.config['train_days']
         self.override = False
         if self.clf is None:
