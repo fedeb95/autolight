@@ -11,6 +11,7 @@ from pandas.io.json import json_normalize
 from sklearn import tree
 import pin
 import logging
+from time import sleep
 
 class Autolight:
     def __init__(self,clf=None):
@@ -74,6 +75,7 @@ class Autolight:
 
     def run(self):
         while True:
+            sleep(1)
             if not self.override:
                 try:
                     data = self.get_data()
