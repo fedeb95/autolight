@@ -17,6 +17,7 @@ class Autolight:
         self.register_time=self.manager.config['register_time']
         self.train_days=self.manager.config['train_days']
         self.override = False
+        self.clf=clf
         if self.clf is None:
             self.clf=tree.DecisionTreeClassifier()
         pin.config('./pin_config')
