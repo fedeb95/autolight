@@ -13,8 +13,9 @@ import pin
 import logging
 from time import sleep
 
-class Autolight:
+class Autolight(Thread):
     def __init__(self,clf=None):
+        super(Autolight, self).__init__()
         self.manager = ConfigManager.get_instance('./app_config')
         self.register_time=self.manager.config['register_time']
         self.train_days=self.manager.config['train_days']
