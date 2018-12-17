@@ -11,7 +11,7 @@ from pandas.io.json import json_normalize
 from sklearn import tree
 import pin
 
-def Autolight():
+class Autolight:
     def __init__(self,clf):
         self.manager = ConfigManager.get_instance('./app_config')
         self.self.register_time=self.manager.config['register_time']
