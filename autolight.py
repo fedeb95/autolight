@@ -63,12 +63,15 @@ class Autolight:
         oldest = (datetime.datetime.now()-datetime.timedelta(days=self.train_days)).timestamp()
         db.collection.delete_many({"timestamp":{"$lt":oldest}})
 
+    def exclude_switch(self,data):
+        return data.loc[:,['distance','light','time']]
+
     def run(self):
         while True:
             if not self.override:
                 try:
                     data = self.get_data()
-                    output=self.clf.predict(json_normalize(data))
+                    output=self.clf.predict(exclude_data(json_normalize(data)))
                     logging.info("predicted:{}\n".format(output))
                     if output=='True' and not ls.is_on():
                         if self.light_switch_mylock.acquire():
