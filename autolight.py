@@ -77,7 +77,7 @@ class Autolight:
             if not self.override:
                 try:
                     data = self.get_data()
-                    output=self.clf.predict(exclude_data(json_normalize(data)))
+                    output=self.clf.predict(self.exclude_data(json_normalize(data)))
                     logging.info("predicted:{}\n".format(output))
                     if output=='True' and not ls.is_on():
                         if self.light_switch_mylock.acquire():
