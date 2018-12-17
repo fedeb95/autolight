@@ -35,10 +35,10 @@ class Autolight:
                             level=logging.DEBUG)
             
     def start(self):
-        self.t = Timer(self.register_time,self.register_data,[self])
-        Timer(84600.0,self.delete,[self]).start()
+        self.t = Timer(self.register_time,self.register_data)
+        Timer(84600.0,self.delete).start()
         self.t.start()
-        if not manager.config['train']:
+        if not self.manager.config['train']:
             self.train()
             thread = Thread(target=self.run,args=self)
             thread.start()
@@ -47,7 +47,7 @@ class Autolight:
         data = self.get_data()
         data['timestamp'] = datetime.datetime.now().timestamp()
         self.db.save(data)
-        Timer(self.register_time,self.register_data,[self]).start()
+        Timer(self.register_time,self.register_data).start()
 
     def train(self):
         data = self.db.get_all()
@@ -79,11 +79,11 @@ class Autolight:
                     data = self.get_data()
                     output=self.clf.predict(self.exclude_switch(json_normalize(data)))
                     logging.info("predicted:{}\n".format(output))
-                    if output=='True' and not ls.is_on():
+                    if output and not ls.is_on():
                         if self.light_switch_mylock.acquire():
                             self.ls.activate()
                             self.light_switch_mylock.release()
-                    elif output=='False' and self.ls.is_on():
+                    elif output and self.ls.is_on():
                         if self.light_switch_mylock.acquire():
                             self.ls.activate()
                             self.light_switch_mylock.release()

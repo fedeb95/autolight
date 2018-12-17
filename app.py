@@ -1,8 +1,13 @@
 from flask import Flask, render_template,request,redirect,url_for
 from autolight import Autolight
+from threading import Thread
+import logging
 
 al=Autolight()
 app = Flask(__name__)
+al.start()
+Thread(target=al.run)
+print("ok")
 
 @app.route('/')
 def index():
@@ -25,8 +30,5 @@ def over():
 
 
 if __name__ == '__main__':
-    # get config, if train=True don't start nn in a new thread but enable training, otherwise only new thread without training
-    al.start()
-    al.run()
     app.run(debug=True, host='0.0.0.0')
     
