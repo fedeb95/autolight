@@ -42,8 +42,7 @@ class Autolight(Thread):
         self.t.start()
         if not self.manager.config['train']:
             self.train()
-            thread = Thread(target=self.run,args=self)
-            thread.start()
+        super(Thread, self).start(self)
 
     def register_data(self):
         data = self.get_data()
@@ -70,6 +69,7 @@ class Autolight(Thread):
         self.train()
         oldest = (datetime.datetime.now()-datetime.timedelta(days=self.train_days)).timestamp()
         db.collection.delete_many({"timestamp":{"$lt":oldest}})
+        Timer(84600.0,self.delete).start()
 
     def exclude_switch(self,data):
         return data.loc[:,['distance','light','time']]
