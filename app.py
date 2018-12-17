@@ -26,5 +26,7 @@ def over():
 
 if __name__ == '__main__':
     # get config, if train=True don't start nn in a new thread but enable training, otherwise only new thread without training
+    al.start()
     al.run()
     app.run(debug=True, host='0.0.0.0')
+    

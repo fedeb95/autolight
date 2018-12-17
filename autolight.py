@@ -27,6 +27,8 @@ class Autolight:
         self.dst = DistanceSensor(echo=self.manager.config['echo'],trigger=self.manager.config['trigger'])
         self.light_switch_mylock = Lock()
         #bitton = Button() # not only activable from web
+            
+    def start(self):
         self.t = Timer(self.register_time,self.register_data,[self])
         Timer(84600.0,self.delete,[self]).start()
         self.t.start()
